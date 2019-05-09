@@ -6,6 +6,7 @@ import { faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
 
 import songsDb from './db/songs';
 import NavBar from './components/NavBar';
+import SearchBar from './components/SearchBar';
 import SongsTable from './components/SongsTable';
 
 library.add(faCaretDown, faCaretUp);
@@ -79,6 +80,12 @@ class App extends React.Component {
       <div>
         <NavBar />
         <Container className="mt-5">
+          <Container className="w-50 mb-5">
+            <SearchBar
+              placeholder="Search"
+              onChange={this.filter}
+            />
+          </Container>
           <SongsTable
             songs={filtered || songs}
             tableFields={tableFields}
