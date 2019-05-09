@@ -6,6 +6,18 @@ import songsDb from './db/songs';
 import NavBar from './components/NavBar';
 import SongsTable from './components/SongsTable';
 
+const tableFields = [
+  {
+    title: 'Song', name: 'name', href: 'url', id: 0,
+  },
+  {
+    title: 'Artist', name: 'artistName', id: 1,
+  },
+  {
+    title: 'Album', name: 'albumName', id: 2,
+  },
+];
+
 class App extends React.Component {
   state = {
     songs: [],
@@ -46,7 +58,7 @@ class App extends React.Component {
       <div>
         <NavBar />
         <Container className="mt-5">
-          <SongsTable songs={songs} sortBy={this.sortBy} sort={sort} />
+          <SongsTable songs={songs} tableFields={tableFields} sortBy={this.sortBy} sort={sort} />
         </Container>
       </div>
     );
