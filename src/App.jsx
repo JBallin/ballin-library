@@ -25,6 +25,7 @@ const tableFields = [
 class App extends React.Component {
   state = {
     songs: [],
+    filtered: null,
     sort: { field: null, asc: null },
   };
 
@@ -55,14 +56,35 @@ class App extends React.Component {
     });
   }
 
+  filter = (query) => {
+    this.setState(({ songs }) => {
+      if (!query) {
+        return { filtered: null };
+      }
+      return {
+        filtered: songs.filter(({ attributes }) => (
+          query.toLowerCase().split(' ').every(word => (
+            tableFields.some(({ name }) => (
+              (attributes[name].toLowerCase().includes(word))
+            ))
+          )))),
+      };
+    });
+  }
+
   render = () => {
-    const { songs, sort } = this.state;
+    const { songs, filtered, sort } = this.state;
 
     return (
       <div>
         <NavBar />
         <Container className="mt-5">
-          <SongsTable songs={songs} tableFields={tableFields} sortBy={this.sortBy} sort={sort} />
+          <SongsTable
+            songs={filtered || songs}
+            tableFields={tableFields}
+            sortBy={this.sortBy}
+            sort={sort}
+          />
         </Container>
       </div>
     );
