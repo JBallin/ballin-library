@@ -12,6 +12,11 @@ class App extends React.Component {
     sort: { field: null, asc: null },
   };
 
+  componentDidMount() {
+    this.setState({ songs: songsDb });
+    this.sortBy('name');
+  }
+
   sortBy = (field) => {
     this.setState(({ songs: prevSongs, sort: { field: prevField, asc: prevAsc } }) => {
       const asc = field !== prevField || !prevAsc;
