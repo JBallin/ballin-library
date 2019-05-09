@@ -35,13 +35,17 @@ class SongsTable extends React.Component {
         <thead>
           <tr>
             {
-              tableFields.map(({ title, name, id }) => (
+              tableFields.map(({
+                title, name, id, width,
+              }) => (
                 <th
                   onMouseEnter={this.handleMouseEnter}
                   onMouseLeave={this.handleMouseLeave}
                   onMouseDown={this.handleMouseDown}
                   onMouseUp={e => this.handleMouseUp(e, name)}
-                  style={{ cursor: 'pointer', userSelect: 'none' }}
+                  style={
+                    { cursor: 'pointer', userSelect: 'none', width: `${width}%` }
+                  }
                   key={id}
                 >
                   {title}
@@ -74,6 +78,7 @@ SongsTable.propTypes = {
   tableFields: PropTypes.arrayOf(PropTypes.shape({
     title: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
+    width: PropTypes.number.isRequired,
     href: PropTypes.string,
   })).isRequired,
   sortBy: PropTypes.func.isRequired,

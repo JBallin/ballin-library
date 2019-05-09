@@ -13,13 +13,13 @@ library.add(faCaretDown, faCaretUp);
 
 const tableFields = [
   {
-    title: 'Song', name: 'name', href: 'url', id: 0,
+    id: 0, title: 'Song', name: 'name', href: 'url', width: 30,
   },
   {
-    title: 'Artist', name: 'artistName', id: 1,
+    id: 1, title: 'Artist', name: 'artistName', width: 28,
   },
   {
-    title: 'Album', name: 'albumName', id: 2,
+    id: 2, title: 'Album', name: 'albumName', width: 42,
   },
 ];
 
