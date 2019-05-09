@@ -2,17 +2,50 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container } from 'reactstrap';
 
-import songs from './db/songs';
+import songsDb from './db/songs';
 import NavBar from './components/NavBar';
 import SongsTable from './components/SongsTable';
 
-const App = () => (
-  <div>
-    <NavBar />
-    <Container className="mt-5">
-      <SongsTable songs={songs} />
-    </Container>
-  </div>
-);
+class App extends React.Component {
+  state = {
+    songs: [],
+    sort: { field: null, asc: null },
+  };
+
+  sortBy = (field) => {
+    this.setState(({ songs: prevSongs, sort: { field: prevField, asc: prevAsc } }) => {
+      const asc = field !== prevField || !prevAsc;
+      const getFieldVal = song => song.attributes[field].toLowerCase();
+      function compare(a, b) {
+        const fieldA = getFieldVal(a).toLowerCase();
+        const fieldB = getFieldVal(b).toLowerCase();
+        if (fieldA < fieldB) {
+          return asc ? -1 : 1;
+        }
+        if (fieldA > fieldB) {
+          return asc ? 1 : -1;
+        }
+        return 0;
+      }
+      return {
+        songs: prevSongs.sort(compare),
+        sort: { field, asc },
+      };
+    });
+  }
+
+  render = () => {
+    const { songs, sort } = this.state;
+
+    return (
+      <div>
+        <NavBar />
+        <Container className="mt-5">
+          <SongsTable songs={songs} sortBy={this.sortBy} sort={sort} />
+        </Container>
+      </div>
+    );
+  }
+}
 
 export default App;
