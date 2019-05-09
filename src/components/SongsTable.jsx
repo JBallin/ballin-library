@@ -31,7 +31,7 @@ class SongsTable extends React.Component {
   render = () => {
     const { songs, tableFields, sort: { field, asc } } = this.props;
     return (
-      <Table>
+      <Table className="table-striped table-bordered">
         <thead>
           <tr>
             {

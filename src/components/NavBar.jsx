@@ -6,7 +6,7 @@ import {
 import githubLogo from '../assets/github-icon.png';
 
 const NavBar = () => (
-  <Navbar light color="light">
+  <Navbar light color="light" className="border-bottom">
     <NavbarBrand>Ballin Library</NavbarBrand>
     <Nav>
       <NavItem>
