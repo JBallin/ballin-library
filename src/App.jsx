@@ -1,10 +1,14 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container } from 'reactstrap';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
 
 import songsDb from './db/songs';
 import NavBar from './components/NavBar';
 import SongsTable from './components/SongsTable';
+
+library.add(faCaretDown, faCaretUp);
 
 const tableFields = [
   {
