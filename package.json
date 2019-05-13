@@ -18,7 +18,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint --ext .js --ext .jsx ."
+    "lint": "eslint --ext .js --ext .jsx .",
+    "coveralls": "react-scripts test --coverage --coverageReporters=text-lcov | coveralls"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -36,6 +37,7 @@
     ]
   },
   "devDependencies": {
+    "coveralls": "^3.0.3",
     "eslint": "^5.16.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.17.2",
