@@ -22,34 +22,32 @@ class SongsTable extends React.Component {
     e.currentTarget.className = 'bg-secondary';
   }
 
-  handleMouseUp = (e, name) => {
+  handleMouseUp = (e, key) => {
     const { sortBy } = this.props;
     e.currentTarget.className = '';
-    sortBy(name);
+    sortBy(key);
   }
 
   render = () => {
-    const { songs, tableFields, sort: { field, asc } } = this.props;
+    const { songs, tableFields, sort: { field, isAsc } } = this.props;
     return (
       <Table className="table-striped table-bordered">
         <thead>
           <tr>
             {
               tableFields.map(({
-                title, name, id, width,
+                title, key, id, width,
               }) => (
                 <th
                   onMouseEnter={this.handleMouseEnter}
                   onMouseLeave={this.handleMouseLeave}
                   onMouseDown={this.handleMouseDown}
-                  onMouseUp={e => this.handleMouseUp(e, name)}
-                  style={
-                    { cursor: 'pointer', userSelect: 'none', width: `${width}%` }
-                  }
+                  onMouseUp={e => this.handleMouseUp(e, key)}
+                  style={{ cursor: 'pointer', userSelect: 'none', width: `${width}%` }}
                   key={id}
                 >
                   {title}
-                  {field === name ? <FontAwesomeIcon icon={`caret-${asc ? 'down' : 'up'}`} className="float-right mt-1" /> : null}
+                  <FontAwesomeIcon hidden={field !== key} icon={`caret-${isAsc ? 'down' : 'up'}`} className="float-right mt-1" />
                 </th>
               ))
             }
@@ -73,11 +71,11 @@ SongsTable.propTypes = {
   })).isRequired,
   sort: PropTypes.shape({
     field: PropTypes.string,
-    asc: PropTypes.bool,
+    isAsc: PropTypes.bool,
   }).isRequired,
   tableFields: PropTypes.arrayOf(PropTypes.shape({
     title: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
+    key: PropTypes.string.isRequired,
     width: PropTypes.number.isRequired,
     href: PropTypes.string,
   })).isRequired,

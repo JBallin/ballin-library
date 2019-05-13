@@ -13,13 +13,13 @@ library.add(faCaretDown, faCaretUp);
 
 const tableFields = [
   {
-    id: 0, title: 'Song', name: 'name', href: 'url', width: 30,
+    id: 0, title: 'Song', key: 'name', href: 'url', width: 30,
   },
   {
-    id: 1, title: 'Artist', name: 'artistName', width: 28,
+    id: 1, title: 'Artist', key: 'artistName', width: 28,
   },
   {
-    id: 2, title: 'Album', name: 'albumName', width: 42,
+    id: 2, title: 'Album', key: 'albumName', width: 42,
   },
 ];
 
@@ -27,7 +27,7 @@ class App extends React.Component {
   state = {
     songs: [],
     filtered: null,
-    sort: { field: null, asc: null },
+    sort: { field: null, isAsc: null },
   };
 
   componentDidMount() {
@@ -36,44 +36,28 @@ class App extends React.Component {
   }
 
   sortBy = (field) => {
-    this.setState(({ songs: prevSongs, sort: { field: prevField, asc: prevAsc } }) => {
-      const asc = field !== prevField || !prevAsc;
-      const getFieldVal = song => song.attributes[field].toLowerCase();
-      function compare(a, b) {
-        const fieldA = getFieldVal(a).toLowerCase();
-        const fieldB = getFieldVal(b).toLowerCase();
-        if (fieldA < fieldB) {
-          return asc ? -1 : 1;
-        }
-        if (fieldA > fieldB) {
-          return asc ? 1 : -1;
-        }
-        return 0;
-      }
-      return {
-        songs: prevSongs.sort(compare),
-        sort: { field, asc },
-      };
+    this.setState(({ songs: prevSongs, sort: { field: prevField, isAsc: prevIsAsc } }) => {
+      const isAsc = field !== prevField || !prevIsAsc;
+      const getField = ({ attributes }) => attributes[field].toLowerCase();
+      const compare = (a, b) => (isAsc ? 1 : -1)
+        * ((getField(a) > getField(b)) - (getField(a) < getField(b)));
+      return { songs: prevSongs.sort(compare), sort: { field, isAsc } };
     });
   }
 
   filter = (query) => {
-    this.setState(({ songs }) => {
-      if (!query) {
-        return { filtered: null };
-      }
-      return {
-        filtered: songs.filter(({ attributes }) => (
-          query.toLowerCase().split(' ').every(word => (
-            tableFields.some(({ name }) => (
-              (attributes[name].toLowerCase().includes(word))
-            ))
-          )))),
-      };
-    });
+    this.setState(({ songs }) => ({
+      filtered: !query ? null : songs.filter(({ attributes }) => query
+        .toLowerCase()
+        .split(' ')
+        .every(word => tableFields
+          .some(({ name }) => attributes[name]
+            .toLowerCase()
+            .includes(word)))),
+    }));
   }
 
-  render = () => {
+  render() {
     const { songs, filtered, sort } = this.state;
 
     return (
@@ -81,10 +65,7 @@ class App extends React.Component {
         <NavBar />
         <Container className="mt-5">
           <Container className="w-50 mb-5">
-            <SearchBar
-              placeholder="Search"
-              onChange={this.filter}
-            />
+            <SearchBar placeholder="Search" onChange={this.filter} />
           </Container>
           <SongsTable
             songs={filtered || songs}
