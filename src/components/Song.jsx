@@ -4,17 +4,15 @@ import PropTypes from 'prop-types';
 const Song = ({ song: { attributes }, tableFields }) => (
   <tr>
     {
-      tableFields.map(({ name, href, id }) => {
-        const data = attributes[name];
-        return (
-          <td key={id}>
-            { href
-              ? <a href={attributes[href]} target="_blank" rel="noopener noreferrer">{data}</a>
-              : data
-            }
-          </td>
-        );
-      })
+      tableFields.map(({ key, href, id }) => (
+        <td key={id}>
+          {
+            href
+              ? <a href={attributes[href]} target="_blank" rel="noopener noreferrer">{attributes[key]}</a>
+              : attributes[key]
+          }
+        </td>
+      ))
     }
   </tr>
 );
@@ -30,7 +28,7 @@ Song.propTypes = {
   }).isRequired,
   tableFields: PropTypes.arrayOf(PropTypes.shape({
     title: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
+    key: PropTypes.string.isRequired,
   })).isRequired,
 };
 
