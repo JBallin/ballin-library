@@ -51,7 +51,7 @@ class App extends React.Component {
         .toLowerCase()
         .split(' ')
         .every(word => tableFields
-          .some(({ name }) => attributes[name]
+          .some(({ key }) => attributes[key]
             .toLowerCase()
             .includes(word)))),
     }));
